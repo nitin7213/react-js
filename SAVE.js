@@ -2,6 +2,8 @@
 /* 
 For install--->   ****remember to make app.js as 'type = module' in index.html
 
+If you Already have Package.json ---> npm i
+
 npm init or npm init -y --->> for initializing npm,  gives package.json ---->(which give information about modules & dependencies used in project )
 npm install -D parcel
 npm install react
