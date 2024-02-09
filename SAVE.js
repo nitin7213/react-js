@@ -33,26 +33,23 @@ npm run build --->for generating dev build
 
 */
 
-
 import React from 'react'; // 'import' is modern JS convention.
 import ReactDOM from 'react-dom/client';
 
-const heading = React.createElement("h1", { id: "head" }, "hello world");
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const heading = React.createElement('h1', { id: 'head' }, 'hello world');
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(heading);
 
- 
-<div id="parent">
-  <div id="child">
+<div id='parent'>
+  <div id='child'>
     <h1>I'm H1 tag</h1>
   </div>
-</div>; 
+</div>;
 
-
-const head = React.createElement("h1", {}, "I'm h1 tag");
-const child = React.createElement("div", { id: "child" }, head);
-const parent = React.createElement("div", { id: "parent" }, child);
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const head = React.createElement('h1', {}, "I'm h1 tag");
+const child = React.createElement('div', { id: 'child' }, head);
+const parent = React.createElement('div', { id: 'parent' }, child);
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(parent);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,7 +116,7 @@ const HeadingComponent = () => {
   return React.createElement('h1', { id: 'head' }, 'this is Nitin');
 };
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<HeadingComponent />);  // React function call
+root.render(<HeadingComponent />); // React function call
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -163,7 +160,7 @@ const HeadingComponent = () => {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<HeadingComponent />);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////React Functional Component : Normal js function which returns JSX 
+/////////React Functional Component : Normal js function which returns JSX
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
@@ -216,9 +213,12 @@ root.render(<HeadingComponent3 />);
 ///Component Composition --> nested react components
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////Ways to use img in react
-import logo from './public/assets/img/logo-192x192.png'; 
-<img  className='logo-img' src={logo} alt='TESTIFY'></img>
-
+import logo from './public/assets/img/logo-192x192.png';
+<img
+  className='logo-img'
+  src={logo}
+  alt='TESTIFY'
+></img>;
 
 const img = <img src={require('./public/assets/img/0.jpg')}></img>;
 function Component() {
@@ -228,7 +228,6 @@ function Component() {
 function Component() {
   return <div>{<img src={require('./public/assets/img/0.jpg')} />}</div>;
 }
-
 
 function Component() {
   return (
@@ -257,8 +256,8 @@ const user = {
   name: 'John',
   address: {
     city: 'New York',
-    postalCode: '10001'
-  }
+    postalCode: '10001',
+  },
 };
 
 // Accessing nested properties without optional chaining
@@ -278,35 +277,72 @@ console.log(country); // undefined
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////Props---> arguments
 <div className='course-container'>
-        {courseApi.map((courses) => {
-          return (
-            <Card
-              key={courses.id}
-              courseData={courses}
-            />
-          );
-        })}
-</div>
+  {courseApi.map((courses) => {
+    return (
+      <Card
+        key={courses.id}
+        courseData={courses}
+      />
+    );
+  })}
+</div>;
 
 ///Don't use index parameter of map as key ---->because it can lead to performance issues and incorrect behavior, especially when items are added or removed from the array.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///You can use any :
+//JS or JSX or txs
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ * src
+ * --components
+ * ----Header
+ * ----Card
+ * ----Container
+ * ----Footer
+ * --util
+ * ----constants  -> for writing all the links ,urls , errors and Variables
+ * ----mockData   -> for writing json data
+ */
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+///Exporting component in react
 
+//default export/import---->you can export a single value from a module, which is considered the "default" export.
+export default Container;
+import Container from './components/Header'; //Importing components in React
 
+//Named export/import
+export const LOGO_URL = require('/./public/assets/img/logo-192x192.png');
+import { LOGO_URL } from '../utils/constants'; //destructuring when using named export
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///We can use both NAMED & DEFAULT in same file
 
+////Exporting----->
+// Named export
+export const utilityFunction1 = () => {
+};
+export const utilityFunction2 = () => {
+};
 
+// Default export
+const defaultExportFunction = () => {
+};
 
+export default defaultExportFunction;
 
+////Importing----->
+// Importing default export
+import defaultExportFunction from './utils';
 
+// Importing named exports
+import { utilityFunction1, utilityFunction2 } from './utils';
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-*/
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

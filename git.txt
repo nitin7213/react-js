@@ -8,7 +8,7 @@ mkdir -> to make directory
 git -v
 git init 
 git remote add origin <ssh/http>--->> make a new ssh in github new repo
-git branch -M main
+git branch -M main  --> 'M' is move
 git add .
 git commit -m "episode-1"
 git status
