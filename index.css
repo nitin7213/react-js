@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Protest+Riot&display=swap');
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  -webkit-user-select: none; /* Safari */
+  user-select: none;
+  border-bottom: 1px solid gray;
+}
+
+.logo {
+  display: flex;
+  flex-direction: row;
+}
+.logo .logo-img {
+  padding: 12px;
+  height: 50px;
+  position: relative;
+  top: 0px;
+}
+
+.logo .logo-name {
+  font-family: 'Protest Riot', sans-serif;
+}
+.nav-items > ul {
+  display: flex;
+}
+
+.nav-items > ul > li {
+  justify-content: end;
+  margin: 5px;
+  padding: 5px;
+  display: flex;
+}
+.nav-items li {
+  font-size: 21px;
+}
+
+/*Card css*/
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  min-height: 65vh;
+}
+.course-card {
+  width: min-content;
+  height: 300px;
+  border: 1px solid gray;
+  padding: 10px;
+  cursor: pointer;
+
+  margin: 10px;
+}
+.course-card:hover {
+  border: 2px solid rgb(46, 43, 43);
+}
+
+.search {
+  padding: 10px;
+  display: block;
+  margin: auto;
+  margin-bottom: 30px;
+}
+
+.card-img {
+  width: 190px;
+  margin: auto;
+}
+
+.course-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+/*Footer*/
+.footer .footer-items > ul {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+.footer .footer-items > ul > li {
+  margin: 23px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+}
