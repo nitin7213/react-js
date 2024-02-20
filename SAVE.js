@@ -5,7 +5,7 @@ For install--->   ****remember to make app.js as 'type = module' in index.html
 If you Already have Package.json ---> npm i
 
 npm init or npm init -y --->> for initializing npm,  gives package.json ---->(which give information about modules & dependencies used in project )
-npm install -D parcel
+npm install -D parcel  --> as Dev dependencies
 npm install react
 npm install react-dom
 
@@ -27,9 +27,6 @@ For Starting (new)--->
 }
 npm run start / npm start 
 npm run build --->for generating dev build
-
-
-
 
 */
 
@@ -56,17 +53,17 @@ root.render(parent);
 /*
 -->>  Package.json lock file--->Also stores detailed version of every modules and their dependencies that were used during the initial setup of a project.
    
-Caret (^):Used for auto update the minor version.
+Caret (^):Used for auto update the minor or patch version.
 Example: "^2.11.0" means any version from 2.11.0 up to, but not including, 3.0.0.
 
-Tilde (~):Used for auto update the major version.
+Tilde (~):Used for auto update only the major version.
 Example: "~2.11.0" means any vers ion from 2.11.0 up to, but not including, 2.12.0.
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
----> 'Parcel': Its a package which has multiple dependency & every dependency has its own functions like:
+---> 'Parcel': Its a Bundler like webpack(default in create-react-app).
 
----->Features:
+---->It has multiple dependency & every dependency has its own functions like:
 1. Dev Build: Development version of software.
 2. Local server: Server running on local machine.
 3. Hot Module Replacement (HMR): Real-time code refreshing.
@@ -78,7 +75,7 @@ Example: "~2.11.0" means any vers ion from 2.11.0 up to, but not including, 2.12
 9. Differential Bundling: Older browser support.
 10. Diagnose & Error Handling: Identifying and managing errors.
 11. Tree Shaking: Removing unused code parts.
-12. Transpilation: Converting JSX to React code.
+12. Transpilation: Converting JSX to React code.(Babel)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ----> Two Methods to Use React:
@@ -89,7 +86,6 @@ Inconvenient for version updates.
 Requires remaining online.
 
 2. Importing through npm(directly):
-
 npm init
 npx create-react-app my-project
 
@@ -100,23 +96,29 @@ npx create-react-app my-project
 /*
 React elements ---> JS Objects
 React Component---> JS Functions
-Props          ---> JS Arguments 
+Properties (props)---> JS Arguments
+React Hooks --> JS Variables
 
 */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 //  React Element
-const heading = React.createElement('h1', { id: 'head' }, 'this is Nitin');
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(heading);
+const heading = React.createElement(
+  'h1',
+  { id: 'head' },
+  'this is React Element'
+);
 
 // React Component : First letter capital
-const HeadingComponent = () => {
-  return React.createElement('h1', { id: 'head' }, 'this is Nitin');
+const HeadingComponent = (props) => {
+  const { a } = props;
+  return React.createElement('h1', { id: 'head' }, `this is ${a}`);
 };
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<HeadingComponent />); // React function call
+root.render(<HeadingComponent a={'Nitin'} />); // React function call
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -125,9 +127,8 @@ Syntax for describing UI.
 Not HTML but JS XML.
 Utilized with React for UI rendering.
 
----> Babel:
+---> Babel(Managed by Parcel):
 Transpiles JSX --->> React.
-Managed by Parcel.
 Converts ES6+ to compatible JS.
 */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -236,46 +237,44 @@ function Component() {
     </div>
   );
 }
-/*
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////Giving Inline styles in React using js:
 
 const styles = {
   color: 'red',
 };
-<div style={styles}></div>
+<div className='first' style={styles}></div>
 
 //Or you can easily give in this way---->
-<div style={{ color: 'red' }}></div>
+// <div style={{ color: 'red' }}></div>
 
-*/
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///Config driven UI---->Dynamic UI based on external settings or data.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////Optional chaining ---->Safely access nested object properties without throwing errors.
-const user = {
-  name: 'John',
-  address: {
-    city: 'New York',
-    postalCode: '10001',
-  },
+////Props---> arguments
+//<MyComponent propName="propValue" anotherProp={anotherValue} />
+
+
+const Card = (props) => {
+  const { courseData } = props;
+  const { courseName, authorName, courseDuration, courseRating } = courseData;
+
+  return (
+    <div
+      className='course-card'
+      style={{ backgroundColor: '#f0f0f0' }}
+      tabIndex={2}
+    >
+      {img}
+      <h3>{courseName}</h3>
+      <h4>{authorName}</h4>
+      <h4>{courseDuration} hrs</h4>
+      <h4>Rating: {courseRating}</h4>
+    </div>
+  );
 };
 
-// Accessing nested properties without optional chaining
-// This will throw an error if any intermediate property is null or undefined
-const city1 = user.address.city; // 'New York'
 
-// With optional chaining (?.)
-const city2 = user.address?.city; // 'New York'
-
-// Trying to access a property that doesn't exist
-const country = user.address?.country; // undefined
-
-console.log(city1); // 'New York'
-console.log(city2); // 'New York'
-console.log(country); // undefined
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////Props---> arguments
 <div className='course-container'>
   {courseApi.map((courses) => {
     return (
@@ -289,10 +288,10 @@ console.log(country); // undefined
 
 ///Don't use index parameter of map as key ---->because it can lead to performance issues and incorrect behavior, especially when items are added or removed from the array.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///You can use any :
-//JS or JSX or txs
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
+You can use any extension:
+----->JS or JSX or txs
+
  * src
  * --components
  * ----Header
@@ -303,11 +302,8 @@ console.log(country); // undefined
  * ----constants  -> for writing all the links ,urls , errors and Variables
  * ----mockData   -> for writing json data
  */
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-///Exporting component in react
+///Exporting Component in react
 
 //default export/import---->you can export a single value from a module, which is considered the "default" export.
 export default Container;
@@ -319,26 +315,114 @@ import { LOGO_URL } from '../utils/constants'; //destructuring when using named 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///We can use both NAMED & DEFAULT in same file
-
-////Exporting----->
-// Named export
 export const utilityFunction1 = () => {
 };
 export const utilityFunction2 = () => {
 };
 
-// Default export
 const defaultExportFunction = () => {
 };
-
 export default defaultExportFunction;
-
-////Importing----->
-// Importing default export
-import defaultExportFunction from './utils';
 
 // Importing named exports
 import { utilityFunction1, utilityFunction2 } from './utils';
+
+////Importing----->
+import defaultExportFunction from './utils';
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///React Hooks:
+//useState: Allows functional components to have state variables. It returns a pair: the current state value and a function that lets you update it.
+import { useState } from 'react';// named import
+import { render } from 'react-dom';
+
+const [name, setname] = useState("nitin");
+
+const namechange = () => {
+    setname('Mr. nitin');  //give this inside any click listner
+  };
+
+<button onClick={namechange}>{name}</button>
+
+
+//useEffect: Adds the ability to perform side effects in functional components. It's similar to componentDidMount, componentDidUpdate, and componentWillUnmount in class components. 
+//useContext: Accepts a context object (created with React.createContext) and returns the current context value for that context. 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//MAP vs Reduce vs filter
+//Map: Transform each element, returning a new array.
+
+const num1 = [1, 2, 3];
+const doubled = num1.map(num => num * 2);  // doubled: [2, 4, 6]
+
+//Filter: Select elements based on condition, returning a new array.
+const num2 = [1, 2, 3, 4];
+const evenNumbers = num2.filter(num => num % 2 === 0);  // evenNumbers: [2, 4]
+
+
+//Reduce: Reduce array to single value through computation.
+const num3 = [1, 2, 3, 4, 5];
+const sum = num3.reduce((acc, curr) => acc + curr, 0);    // sum: 15
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Fetching API dynamically
+//1. loads -> api-> render
+//2. loads -> render -> api -> render data(better Ux: renders the page and then render the data)
+
+
+//useEffect runs after every render cycle is completed.(helpful in api call)
+useEffect(() => {
+    console.log('useEffect called');
+  }, []);
+  
+console.log('body rendered'); //this will print first
+return{
+  //After this useEffect will render
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//api fetch
+// we cannot directly fetch api because of CORS policy(Cross-Origin Resource Sharing) 
+// cors extension
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/cards');
+      const result = await response.json();
+      setlistOfCourses(result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+//Shimmer UI:Loading placeholder with subtle animation, indicates content fetching process.
+//We load fake Skeleton till the data is loaded:
+  //Conditional Rendering or Preloader
+  if (listOfCourses.length === 0) {
+    return <Shimmer />;
+  }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///Optional Chaining
+
+const obj = {
+  data: {
+    value: 10
+  }
+};
+
+// Without optional chaining
+const value = obj.data.value; // May throw an error if obj or data is null/undefined
+
+// With optional chaining
+const safeValue = obj?.data?.value; // No error, safeValue will be undefined if obj or data is null/undefined
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//to run fake json server: json-server --watch db.json
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Protest+Riot&display=swap');
 
+/*Header css*/
 .header {
   display: flex;
   flex-direction: row;
@@ -18,10 +19,12 @@
   height: 50px;
   position: relative;
   top: 0px;
+  cursor: pointer;
 }
 
 .logo .logo-name {
   font-family: 'Protest Riot', sans-serif;
+  cursor: pointer;
 }
 .nav-items > ul {
   display: flex;
@@ -32,18 +35,48 @@
   margin: 5px;
   padding: 5px;
   display: flex;
+  cursor: pointer;
 }
 .nav-items li {
   font-size: 21px;
 }
 
-/*Card css*/
+/*Container css*/
 .container {
   display: flex;
   flex-direction: column;
   padding: 50px;
   min-height: 65vh;
 }
+.search {
+  padding: 10px;
+  display: block;
+  margin: auto;
+  margin-bottom: 30px;
+  min-height: 30px;
+  justify-content: center;
+}
+.search .search-box {
+  min-height: 30px;
+  padding: 5px 5px 5px 10px;
+  font-size: 20px;
+}
+/*Filter btn*/
+.filter-btn {
+  margin: 20px 70px;
+  padding: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.course-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/*Card css*/
 .course-card {
   width: min-content;
   height: 300px;
@@ -56,35 +89,41 @@
 .course-card:hover {
   border: 2px solid rgb(46, 43, 43);
 }
-
-.search {
-  padding: 10px;
-  display: block;
-  margin: auto;
-  margin-bottom: 30px;
-}
-
 .card-img {
   width: 190px;
   margin: auto;
 }
 
-.course-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-/*Footer*/
-.footer .footer-items > ul {
-  list-style-type: none;
-  display: flex;
-  flex-wrap: wrap;
-}
-.footer .footer-items > ul > li {
-  margin: 23px;
-}
+/*Footer css*/
 
 .footer {
   display: flex;
   flex-direction: column;
+  background-color: #f0f0f0;
+}
+.footer .footer-items > ul {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.footer .footer-items > ul > li {
+  margin: 23px;
+  cursor: pointer;
+}
+.copyright {
+  display: flex;
+  justify-content: center;
+}
+
+/* Shimmer */
+.shimmer-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.shimmer-card {
+  margin: 20px;
+  width: 200px;
+  height: 200px;
+  background: #f0f0f0;
 }

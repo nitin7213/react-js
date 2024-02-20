@@ -16,12 +16,13 @@ const Card = (props) => {
     <div
       className='course-card'
       style={{ backgroundColor: '#f0f0f0' }}
+      tabIndex={2}
     >
       {img}
       <h3>{courseName}</h3>
       <h4>{authorName}</h4>
       <h4>{courseDuration} hrs</h4>
-      <h4>{courseRating}</h4>
+      <h4>Rating: {courseRating}</h4>
     </div>
   );
 };
