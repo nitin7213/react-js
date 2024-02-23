@@ -1,11 +1,13 @@
+// Container Component
+import React, { useEffect, useState } from 'react';
 import Card from './Card';
 import Shimmer from './Shimmer';
-import courseApi from '/src/utils/mockData';
-import { useEffect, useState } from 'react';
+import SearchBar from './SearchBar';
+import FilterById from './FilterById';
 
 const Container = () => {
-  const [listOfCourses, setlistOfCourses] = useState([]);
-  //const FilteredList = listOfCourses.filter((res) => res.courseRating >= 4);
+  const [listOfCourses, setListOfCourses] = useState([]);
+  const [filteredSearch, setFilteredSearch] = useState([]); // dummy copy for search and filter
 
   useEffect(() => {
     fetchData();
@@ -14,47 +16,45 @@ const Container = () => {
   const fetchData = async () => {
     try {
       const response = await fetch('http://localhost:3000/cards');
-      const result = await response.json();
-      setlistOfCourses(result);
-    } catch (err) {
-      console.log(err);
+      const data = await response.json();
+      setTimeout(() => {
+        setListOfCourses(data);
+        setFilteredSearch(data);
+      }, 500); //to simulate Shimmer
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
   };
 
-  //Conditional Rendering or Preloader
-  if (listOfCourses.length === 0) {
-    return <Shimmer />;
-  }
+  //Shimmer
+  // if (listOfCourses.length === 0) {
+  //   return <Shimmer />;
+  // }
 
   return (
     <div className='container'>
       <div className='search'>
-        <input
-          className='search-box'
-          placeholder='Search Course'
-          tabIndex={2}
+        <SearchBar
+          listOfCourses={listOfCourses}
+          setFilteredSearch={setFilteredSearch}
         />
       </div>
-      <div className='filter'>
-        <button
-          className='filter-btn'
-          onClick={() => {
-            setlistOfCourses(FilteredList);
-          }}
-        >
-          Filter By Rating
-        </button>
-      </div>
+      <FilterById
+        listOfCourses={listOfCourses}
+        setFilteredSearch={setFilteredSearch}
+      />
       <div className='course-container'>
-        {listOfCourses.map((courses) => {
-          return (
+        {listOfCourses.length === 0 ? (
+          <Shimmer /> //Shimmer
+        ) : (
+          filteredSearch.map((course) => (
             <Card
-              key={courses.id}
-              courseData={courses}
+              key={course.id}
+              courseData={course}
             />
-          );
-        })}
-      </div>
+          ))
+        )}
+      </div>{' '}
     </div>
   );
 };

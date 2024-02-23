@@ -1,14 +1,13 @@
 import { CARD_IMG } from '../utils/constants';
 
-const img = (
-  <img
-    className='card-img'
-    src={CARD_IMG}
-    alt='Card Image'
-  ></img>
-);
-
 const Card = (props) => {
+  const img = (
+    <img
+      className='card-img'
+      src={CARD_IMG}
+      alt='Card Image'
+    ></img>
+  );
   const { courseData } = props;
   const { courseName, authorName, courseDuration, courseRating } = courseData;
 

@@ -50,7 +50,7 @@
 }
 .search {
   padding: 10px;
-  display: block;
+  display: flex;
   margin: auto;
   margin-bottom: 30px;
   min-height: 30px;
@@ -60,6 +60,10 @@
   min-height: 30px;
   padding: 5px 5px 5px 10px;
   font-size: 20px;
+}
+.search-btn {
+  height: 45px;
+  width: 10vw;
 }
 /*Filter btn*/
 .filter-btn {
@@ -83,7 +87,6 @@
   border: 1px solid gray;
   padding: 10px;
   cursor: pointer;
-
   margin: 10px;
 }
 .course-card:hover {
@@ -120,10 +123,13 @@
 .shimmer-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .shimmer-card {
   margin: 20px;
-  width: 200px;
-  height: 200px;
+  width: 170px;
   background: #f0f0f0;
+  height: 300px;
+  padding: 10px;
+  cursor: pointer;
 }

@@ -97,8 +97,7 @@ npx create-react-app my-project
 React elements ---> JS Objects
 React Component---> JS Functions
 Properties (props)---> JS Arguments
-React Hooks --> JS Variables
-
+React Hooks --> JS Variables (State variables)
 */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -128,7 +127,7 @@ Not HTML but JS XML.
 Utilized with React for UI rendering.
 
 ---> Babel(Managed by Parcel):
-Transpiles JSX --->> React.
+Transpilation of JSX --->> React.
 Converts ES6+ to compatible JS.
 */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,11 +180,11 @@ const Title1 = () => (
 );
 
 //Using explicit return
-const Title2 = () => {
+const Title2 = (props) => {
   return (
     <div>
       {' '}
-      <h1>Hi, this is 3rd Title</h1>
+      <h1>Hi, this is {props.name}</h1>
     </div>
   );
 };
@@ -194,7 +193,7 @@ const Title2 = () => {
 ---->3 ways to call react functional component
 1. <Title />
 2. <Title></Title>
-3. {Title()} 
+3. {Title()} -->cannot directly render 
 */
 
 const HeadingComponent3 = () => {
@@ -202,7 +201,7 @@ const HeadingComponent3 = () => {
     <div>
       <Title />
       <Title1></Title1>
-      {Title2()}
+      {Title2({ name: 'props' })} 
 
       <h1>Functional Component</h1>
     </div>
@@ -214,7 +213,7 @@ root.render(<HeadingComponent3 />);
 ///Component Composition --> nested react components
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////Ways to use img in react
-import logo from './public/assets/img/logo-192x192.png';
+import logo from './public/assets/img/logo-192x192.png'; //preferred
 <img
   className='logo-img'
   src={logo}
@@ -224,10 +223,6 @@ import logo from './public/assets/img/logo-192x192.png';
 const img = <img src={require('./public/assets/img/0.jpg')}></img>;
 function Component() {
   return <div>{img}</div>;
-}
-
-function Component() {
-  return <div>{<img src={require('./public/assets/img/0.jpg')} />}</div>;
 }
 
 function Component() {
@@ -241,15 +236,13 @@ function Component() {
 /////Giving Inline styles in React using js:
 
 const styles = {
-  color: 'red',
+  color= 'red',
 };
 <div className='first' style={styles}></div>
-
-//Or you can easily give in this way---->
-// <div style={{ color: 'red' }}></div>
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///Config driven UI---->Dynamic UI based on external settings or data.
+{/* 
+//Or you can easily give in this way----> */}
+<div><div className='second' style={{ color: 'red' }}></div></div>
+ 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////Props---> arguments
 //<MyComponent propName="propValue" anotherProp={anotherValue} />
@@ -296,23 +289,25 @@ You can use any extension:
  * --components
  * ----Header
  * ----Card
- * ----Container
- * ----Footer
+ * ---
+ * ----Footer-Container
  * --util
  * ----constants  -> for writing all the links ,urls , errors and Variables
  * ----mockData   -> for writing json data
+ * --pages
+ * ----login
+ * ----About us
  */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///Exporting Component in react
 
 //default export/import---->you can export a single value from a module, which is considered the "default" export.
 export default Container;
-import Container from './components/Header'; //Importing components in React
+import Container from './components/Header'; //Importing default component in React
 
 //Named export/import
 export const LOGO_URL = require('/./public/assets/img/logo-192x192.png');
 import { LOGO_URL } from '../utils/constants'; //destructuring when using named export
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///We can use both NAMED & DEFAULT in same file
 export const utilityFunction1 = () => {
@@ -327,25 +322,8 @@ export default defaultExportFunction;
 // Importing named exports
 import { utilityFunction1, utilityFunction2 } from './utils';
 
-////Importing----->
+////Importing default export----->
 import defaultExportFunction from './utils';
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///React Hooks:
-//useState: Allows functional components to have state variables. It returns a pair: the current state value and a function that lets you update it.
-import { useState } from 'react';// named import
-import { render } from 'react-dom';
-
-const [name, setname] = useState("nitin");
-
-const namechange = () => {
-    setname('Mr. nitin');  //give this inside any click listner
-  };
-
-<button onClick={namechange}>{name}</button>
-
-
-//useEffect: Adds the ability to perform side effects in functional components. It's similar to componentDidMount, componentDidUpdate, and componentWillUnmount in class components. 
-//useContext: Accepts a context object (created with React.createContext) and returns the current context value for that context. 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //MAP vs Reduce vs filter
 //Map: Transform each element, returning a new array.
@@ -362,52 +340,7 @@ const evenNumbers = num2.filter(num => num % 2 === 0);  // evenNumbers: [2, 4]
 const num3 = [1, 2, 3, 4, 5];
 const sum = num3.reduce((acc, curr) => acc + curr, 0);    // sum: 15
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Fetching API dynamically
-//1. loads -> api-> render
-//2. loads -> render -> api -> render data(better Ux: renders the page and then render the data)
-
-
-//useEffect runs after every render cycle is completed.(helpful in api call)
-useEffect(() => {
-    console.log('useEffect called');
-  }, []);
-  
-console.log('body rendered'); //this will print first
-return{
-  //After this useEffect will render
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//api fetch
-// we cannot directly fetch api because of CORS policy(Cross-Origin Resource Sharing) 
-// cors extension
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/cards');
-      const result = await response.json();
-      setlistOfCourses(result);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-//Shimmer UI:Loading placeholder with subtle animation, indicates content fetching process.
-//We load fake Skeleton till the data is loaded:
-  //Conditional Rendering or Preloader
-  if (listOfCourses.length === 0) {
-    return <Shimmer />;
-  }
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///Optional Chaining
-
+///Optional Chaining: If the required object doesn't exist need to resolve the error 
 const obj = {
   data: {
     value: 10
@@ -419,9 +352,175 @@ const value = obj.data.value; // May throw an error if obj or data is null/undef
 
 // With optional chaining
 const safeValue = obj?.data?.value; // No error, safeValue will be undefined if obj or data is null/undefined
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///REACT HOOKS: useState,useEffect,useContext
+
+//useState ---> Allows functional components to have state variables. It returns a pair: the current state value and a function that lets you update it.
+const Container = () => {
+  //State Variable
+  const [name, setName] = useState('nitin');
+
+  //Onclick Callback
+  const nameChange = () => {
+    if (name === 'nitin') setName('ankit');
+    else setName('nitin'); //give this inside any click listner
+  };
+
+  return (
+    <div>
+      <button onClick={nameChange}>{name}</button>
+    </div>
+  );
+};
+//Why we use State variables in react ---> because we need the components to be dynamic
+//How State Variable can be 'const': State when changes re-renders & updating const values indirectly.
+//Using State Variable: It will render whole Parent component and also the container which has it props
+
+const Container1 = () => {
+  //State Variable
+  const [btnNameReact, setbtnNameReact] = useState('Login');
+
+  //Onclick Callback
+  const changeName = () => {
+    btnNameReact === 'Login'
+      ? setbtnNameReact('Logout')
+      : setbtnNameReact('Login');
+  };
+
+  return (
+    <div>
+      <button
+        className='login'
+        onClick={changeName}
+      >
+        {btnNameReact}
+      </button>
+    </div>
+  );
+};
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//useEffect---> runs after every render cycle is completed.(helpful in API call)
+useEffect(() => {
+    console.log('useEffect called');
+  }, []);
+  
+console.log('body rendered'); //this will print first
+
+return{
+  //After this useEffect will render
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//useContext: Accepts a context object (created with React.createContext) and returns the current context value for that context. 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Config driven UI----> Dynamic UI based on external settings or data.
+//Fetching API dynamically (loads -> render -> api render data) : Better UX renders the page and then render the data of API using useEffect();
+// we cannot directly fetch api because of CORS policy(Cross-Origin Resource Sharing) --> CORS bypass extension
+// To run fake json server ---> json-server --watch src/utils/db.json
+
+useEffect(() => {
+    fetchData();  //function called
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/cards');
+      const result = await response.json();
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Conditional Rendering or Preloader
+// Shimmer UI:Loading placeholder with subtle animation, indicates content fetching process.
+
+ 
+if (listOfCourses.length === 0) {
+  return <Shimmer />;
+}
+
+// We load fake Skeleton till the data is loaded:
+<div className='course-container'>
+        {listOfCourses.length === 0 ? (
+          <Shimmer /> //Shimmer
+        ) : (
+          filteredSearch.map((course) => (
+            <Card
+              key={course.id}
+              courseData={course}
+            />
+          ))
+        )}
+      </div>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+Click Listners:
+onClick: Executes a function when an element is clicked.
+onChange: Executes a function when the value of an input element changes.
+onSubmit: Executes a function when a form is submitted.
+onMouseOver: Executes a function when the mouse pointer moves over an element.
+onMouseOut: Executes a function when the mouse pointer moves out of an element.
+*/
+
+//Onclick:
+const imgHover = () => {
+  //State Variable
+  const [logoImgHover, setLogoImgHover] = useState(LOGO_URL);
+
+  return (
+    <div>
+      <img
+        src={logoImgHover}
+        width={50}
+        onMouseOver={() => {
+          setLogoImgHover(LOGO_URL2);
+        }}
+        onMouseOut={() => {
+          setLogoImgHover(LOGO_URL);
+        }}
+      />
+    </div>
+  );
+};
+
+
+//Onchange :
+const Search = () => {
+  //State Variable
+  const [searchtext, setSearchtext] = useState('');
+
+  const typeText = (e) => {
+    setSearchtext(e.target.value); // 'e' is event
+  };
+
+  const printSearch = () => {
+    console.log(searchtext);
+  };
+
+  return (
+    <div>
+      <input
+        type='text'
+        className='search-box'
+        placeholder='Search Course'
+        tabIndex={2}
+        value={searchtext}
+        onChange={typeText}
+      />
+      <button
+        className='search-btn'
+        onClick={printSearch}
+      >
+        Search
+      </button>
+    </div>
+  );
+};
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//to run fake json server: json-server --watch db.json
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
