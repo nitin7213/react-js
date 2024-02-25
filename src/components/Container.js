@@ -1,9 +1,11 @@
 // Container Component
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
+import { courseJson } from '../utils/constants';
 import Shimmer from './Shimmer';
 import SearchBar from './SearchBar';
 import FilterById from './FilterById';
+import { Link } from 'react-router-dom';
 
 const Container = () => {
   const [listOfCourses, setListOfCourses] = useState([]);
@@ -15,7 +17,7 @@ const Container = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:3000/cards');
+      const response = await fetch(courseJson);
       const data = await response.json();
       setTimeout(() => {
         setListOfCourses(data);
@@ -48,10 +50,12 @@ const Container = () => {
           <Shimmer /> //Shimmer
         ) : (
           filteredSearch.map((course) => (
-            <Card
-              key={course.id}
-              courseData={course}
-            />
+            <Link
+              to={'course/' + course.id}
+              key={course.id} //should be put in the parent while mapping
+            >
+              <Card courseData={course} />
+            </Link>
           ))
         )}
       </div>{' '}

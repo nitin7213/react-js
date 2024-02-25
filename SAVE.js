@@ -353,7 +353,8 @@ const value = obj.data.value; // May throw an error if obj or data is null/undef
 // With optional chaining
 const safeValue = obj?.data?.value; // No error, safeValue will be undefined if obj or data is null/undefined
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///REACT HOOKS: useState,useEffect,useContext
+///REACT HOOKS: useState,useEffect,useContext (starting with 'use')
+// They are always called inside functional Components & don't use them inside any if-else condition
 
 //useState ---> Allows functional components to have state variables. It returns a pair: the current state value and a function that lets you update it.
 const Container = () => {
@@ -401,14 +402,30 @@ const Container1 = () => {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //useEffect---> runs after every render cycle is completed.(helpful in API call)
 useEffect(() => {
-    console.log('useEffect called');
+    console.log('useEffect called after every render cycle is completed');
   }, []);
   
-console.log('body rendered'); //this will print first
+console.log('this will print first'); //this will print first
 
 return{
   //After this useEffect will render
 }
+
+//if no dependency array --> useEffect will be called on every render
+useEffect(() => {
+  console.log('useEffect called on every render');
+});
+
+//if dependency array is empty []  ---> useEffect will called once (Initial Render)
+useEffect(() => {
+  console.log('useEffect called once');
+}, []);
+
+//if dependency array is [btnNameReact]  ---> useEffect will called every time 'btnNameReact' is updated
+useEffect(() => {
+    console.log('useEffect called on btnNameReact');
+  }, [btnNameReact]);
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //useContext: Accepts a context object (created with React.createContext) and returns the current context value for that context. 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -517,10 +534,65 @@ const Search = () => {
   );
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///REACT ROUTERS : PAGES (Main code is written in App.js)
+
+// npm i react-router-dom ----> To install
+
+import { createBrowserRouter, RouterProvider, Outlet, useParams } from 'react-router-dom';
+
+const App = () => {
+  return (
+    <div className='App'>
+      <Header />
+      <Outlet />
+      <Footer />
+    </div>
+  );
+};
+
+const appRouter = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      {
+        path: '/',
+        element: <Container />,
+      },
+      {
+        path: '/about',
+        element: <About />,
+      },
+      {
+        path: '/contact',
+        element: <Contact />,
+      },
+    ],
+    errorElement: <Error />,
+  },
+]);
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<RouterProvider router={appRouter} />);
+
+
+
+///to make it single page application
+import { Link } from 'react-router-dom';
+<>
+<Link to='/'>Home</Link>
+<Link to='/about'>About us</Link>
+<Link to='/contact'>Contact us</Link>
+</>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//// 2 Types of Routing in web apps
+//--->Client Side Routing: Browser handles routes in single-page applications like React  Router 
+//--->Server Side Routing: Server determines responses in multi-page applications
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Dynamic Routing: URL changes content based on parameters or variables
+
+// useParams --> helpful in getting the id
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
