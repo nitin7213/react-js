@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { LOGO_URL } from '../utils/constants';
 import { LOGO_URL2 } from '../utils/constants';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Header = () => {
   // let btnLogin = 'Login';
@@ -9,6 +9,8 @@ const Header = () => {
   const [logoImgHover, setLogoImgHover] = useState(LOGO_URL);
   //console.log('header Rendered'); // It will render whole Header
   //if dependency array is [btnNameReact]  ---> useEffect will called every time 'btnNameReact' is updated
+
+  //useLocation
 
   return (
     <div className='header'>
@@ -31,13 +33,35 @@ const Header = () => {
       <div className='nav-items'>
         <ul>
           <li>
-            <Link to='/'>Home</Link>
+            <NavLink
+              style={({ isActive }) => {
+                return { color: isActive ? 'red' : 'black' };
+              }}
+              to='/'
+            >
+              Home
+            </NavLink>
           </li>
           <li>
-            <Link to='/about'>About us</Link>
+            <NavLink
+              style={({ isActive }) => {
+                return { color: isActive ? 'red' : 'black' };
+              }}
+              to='/about'
+            >
+              About us
+            </NavLink>
           </li>
           <li>
-            <Link to='/contact'>Contact us</Link>
+            <NavLink
+              style={({ isActive }) => {
+                return { color: isActive ? 'red' : 'black' };
+              }}
+              to='/contact'
+              state={'Hello this is state'}
+            >
+              Contact us
+            </NavLink>
           </li>
           <li>Cart</li>
           <button

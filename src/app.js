@@ -1,22 +1,23 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 
 //Import Components
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Container from './components/Container';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 import About from './components/About';
 import Contact from './components/Contact';
 import Error from './components/Error';
 import CoursePage from './components/CoursePage';
+import NotFound from './components/NotFound';
+import CourseSidebar from './components/CourseSIdebar';
 
 //Call Components
 const App = () => {
   return (
     <div className='App'>
       <Header />
-      <Outlet />
+      <Outlet context={{ hello: 'welcome' }} />
       <Footer />
     </div>
   );
@@ -25,47 +26,41 @@ const App = () => {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <App />, //Common Elements
+    errorElement: <Error />,
+    //Nested Routes
     children: [
       {
-        path: '/',
+        index: true,
         element: <Container />,
       },
       {
-        path: '/about',
+        path: 'about',
         element: <About />,
       },
       {
-        path: '/contact',
+        path: 'contact',
         element: <Contact />,
       },
       {
-        path: '/course/:cid',
-        element: <CoursePage />,
+        path: 'course/',
+        children: [
+          {
+            index: true,
+            element: <CourseSidebar />,
+          },
+          {
+            path: ':cid',
+            element: <CoursePage />,
+          },
+        ],
       },
-      // {
-      //   path: '*',
-      //   element: <Error />,
-      // },
     ],
-    errorElement: <Error />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]);
 
 export default router;
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<RouterProvider router={router} />);
-
-/*
- * AppLayout
- * --Header
- * ----Logo
- * ----Nav Items
- * --Container
- * ----Search
- * ----Card
- * --Footer
- * ----Footer Items
- * ----Copyright
- */

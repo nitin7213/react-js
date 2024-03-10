@@ -53,11 +53,11 @@ root.render(parent);
 /*
 -->>  Package.json lock file--->Also stores detailed version of every modules and their dependencies that were used during the initial setup of a project.
    
-Caret (^):Used for auto update the minor or patch version.
-Example: "^2.11.0" means any version from 2.11.0 up to, but not including, 3.0.0.
+Caret (^): Auto-updates minor or patch versions, preserves major.
+Example: "^2.11.0" to <3.0.0.
 
-Tilde (~):Used for auto update only the major version.
-Example: "~2.11.0" means any vers ion from 2.11.0 up to, but not including, 2.12.0.
+Tilde (~): Auto-updates only the patch version, preserves major/minor.
+Example: "~2.11.0" to <2.12.0.
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -88,6 +88,19 @@ Requires remaining online.
 2. Importing through npm(directly):
 npm init
 npx create-react-app my-project
+
+3.Tailwind
+npm install -D tailwindcss --> As Dev dependencies
+npx tailwindcss init  --> config file
+
+--->Add path of all your template files in config file:
+https://tailwindcss.com/docs/installation
+
+
+--->Add these to index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 
 */
@@ -220,15 +233,16 @@ import logo from './public/assets/img/logo-192x192.png'; //preferred
   alt='TESTIFY'
 ></img>;
 
-const img = <img src={require('./public/assets/img/0.jpg')}></img>;
+const logo = <img src={require('./public/assets/img/0.jpg')}></img>;
 function Component() {
-  return <div>{img}</div>;
+  return <div>{logo}</div>;
 }
 
+const imgSrc=require('./public/assets/img/0.jpg');
 function Component() {
   return (
     <div>
-      <img src={require('./public/assets/img/0.jpg')} />
+      <img src={imgSrc} />
     </div>
   );
 }
@@ -249,8 +263,8 @@ const styles = {
 
 
 const Card = (props) => {
-  const { courseData } = props;
-  const { courseName, authorName, courseDuration, courseRating } = courseData;
+  //Json destructuring of each object member
+  const {  authorName, courseDuration, courseRating } = props.courseData;
 
   return (
     <div
@@ -259,7 +273,8 @@ const Card = (props) => {
       tabIndex={2}
     >
       {img}
-      <h3>{courseName}</h3>
+      {/* Props can we displayed without destructuring */}
+      <h3>{props.courseData.courseName}</h3>
       <h4>{authorName}</h4>
       <h4>{courseDuration} hrs</h4>
       <h4>Rating: {courseRating}</h4>
@@ -325,9 +340,9 @@ import { utilityFunction1, utilityFunction2 } from './utils';
 ////Importing default export----->
 import defaultExportFunction from './utils';
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//MAP vs Reduce vs filter
-//Map: Transform each element, returning a new array.
+//MAP vs filter vs Find vs Reduce (All 3 takes callback)
 
+//Map: Transform each element, returning a new array.
 const num1 = [1, 2, 3];
 const doubled = num1.map(num => num * 2);  // doubled: [2, 4, 6]
 
@@ -335,6 +350,9 @@ const doubled = num1.map(num => num * 2);  // doubled: [2, 4, 6]
 const num2 = [1, 2, 3, 4];
 const evenNumbers = num2.filter(num => num % 2 === 0);  // evenNumbers: [2, 4]
 
+//Find:Returns the first element in the array that satisfies the provided testing function
+const numbers = [1, 2, 3, 4, 5];
+const firstEvenNumber = numbers.find(num => num % 2 === 0); // Output: 2
 
 //Reduce: Reduce array to single value through computation.
 const num3 = [1, 2, 3, 4, 5];
@@ -357,19 +375,19 @@ const safeValue = obj?.data?.value; // No error, safeValue will be undefined if 
 // They are always called inside functional Components & don't use them inside any if-else condition
 
 //useState ---> Allows functional components to have state variables. It returns a pair: the current state value and a function that lets you update it.
+//Never Update State Variable directly
 const Container = () => {
   //State Variable
-  const [name, setName] = useState('nitin');
+  const [count, setCount] = useState(0);
 
   //Onclick Callback
-  const nameChange = () => {
-    if (name === 'nitin') setName('ankit');
-    else setName('nitin'); //give this inside any click listner
+  const increment = () => {
+   setCount(count=>count+1); //it  takes a call back 
   };
 
   return (
     <div>
-      <button onClick={nameChange}>{name}</button>
+      <button onClick={increment}>{count}</button>
     </div>
   );
 };
@@ -435,7 +453,7 @@ useEffect(() => {
 // To run fake json server ---> json-server --watch src/utils/db.json
 
 useEffect(() => {
-    fetchData();  //function called
+    fetchData();  //function called inside the callback
   }, []);
 
   const fetchData = async () => {
@@ -534,13 +552,112 @@ const Search = () => {
   );
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///REACT ROUTERS : PAGES (Main code is written in App.js)
+//// 2 Types of Routing in web apps
+//--->Client Side Routing: Browser handles routes in single-page applications like React Router 
+//--->Server Side Routing: Server determines responses like in multi-page applications
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///REACT ROUTERS ---> npm i react-router-dom 
+//React Router Using 'createBrowserRouter'
 
-// npm i react-router-dom ----> To install
+//Index.js
+import { RouterProvider } from 'react-router-dom';
+root.render(<RouterProvider router={router} />);
 
-import { createBrowserRouter, RouterProvider, Outlet, useParams } from 'react-router-dom';
+//App.js
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 
+//Outlet: used to render child routes
 const App = () => {
+  return (
+    <div className='App'>
+      <Header />
+      <Outlet />   //
+      <Footer />
+    </div>
+  );
+};
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />, //Common Component, All its children uses this App component using Outlet
+    errorElement: <Error />,
+    //Nested Routes
+    children: [
+      {
+        index: true,
+        element: <Container />,
+      },
+      {
+        path: 'about',
+        element: <About />,
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
+      },
+      {
+        path: 'course',
+        children: [
+          {
+            index: true,
+            element: <CourseSidebar />, 
+          },
+          {
+            path: ':cid',
+            element: <CoursePage />,
+          },
+        ],
+      },
+    ],
+  },
+  //Making NotFound page parallel
+  {
+    path: '*',
+    element: <NotFound />,
+  },
+]);
+
+// Add Link on 
+import { Link } from 'react-router-dom';
+<nav>
+    <Link to='/about'>About us</Link>
+    <Link to='/contact'>Contact us</Link>
+    <Link to='/'>Home</Link>
+    <Link  to={'course/' + course.id} key={course.id}>Course</Link>
+</nav>
+
+// useParams --> helpful in getting the 'cid' Argument
+import { useParams } from 'react-router-dom';
+
+const [courseInfo, setCourseInfo] = useState(null);
+const { cid } = useParams(); //destructuring
+
+//Fetching the 'id' specific content from API.JSON
+
+const fetchCourse = async () => {
+  const response = await fetch(courseDetailJson + cid);
+  const result = await response.json();
+  setCourseInfo(result);
+};
+
+useEffect(() => {
+  fetchCourse();
+}, []);
+
+
+//Display 
+<ul>
+    <li>{courseInfo.introduction}</li>
+    <li>{courseInfo.theory}</li>
+</ul>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///React Router Using JSX ROUTE
+
+//APP.JS
+import { createBrowserRouter,createRoutesFromElements,Outlet,Route,} from 'react-router-dom';
+  
+  const App = () => {
   return (
     <div className='App'>
       <Header />
@@ -550,49 +667,406 @@ const App = () => {
   );
 };
 
-const appRouter = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      {
-        path: '/',
-        element: <Container />,
-      },
-      {
-        path: '/about',
-        element: <About />,
-      },
-      {
-        path: '/contact',
-        element: <Contact />,
-      },
-    ],
-    errorElement: <Error />,
-  },
-]);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<RouterProvider router={appRouter} />);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route
+        errorElement={<Error />}
+        path='/'
+        element={<App />}
+      >
+        <Route
+          index
+          element={<Container />}
+        />
+        <Route
+          path='about'
+          element={<About />}
+        />
+        <Route
+          path='contact'
+          element={<Contact />}
+        />
+        <Route path='course'>
+          <Route
+            index
+            element={<CourseSidebar />}
+          />
+          <Route
+            path=':cid'
+            element={<CoursePage />}
+          />
+        </Route>
+      </Route>
+      <Route
+        path='*'
+        element={<NotFound />}
+      />
+    </>
+  )
+);
 
+export default router;
 
+//INDEX.JS
+import { RouterProvider } from 'react-router-dom';
+root.render(
+    <RouterProvider router={router} />
+);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Class Based Components: to use any member related to class we use 'this'
+/* 
+Changes
+  this.state       --->useState
+  props            --->this.props
+  componentDidMount--->useEffect
+*/
 
-///to make it single page application
-import { Link } from 'react-router-dom';
-<>
-<Link to='/'>Home</Link>
-<Link to='/about'>About us</Link>
-<Link to='/contact'>Contact us</Link>
-</>
+import React from 'react';
+class UserClass extends React.Component {
+  render() {
+    //Function & Variable declaration
+    return <div>Hello</div>;
+  }
+}
+export default UserClass;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////'PROPS' in 'CLASS COMPONENT'
+import React from 'react';
+
+class UserClass extends React.Component {
+  constructor(props) {
+    super(props); // initializes parent class constructor, allowing access to 'this.props'
+  }
+  render() {
+    const { name } = this.props;
+    return (
+      <div>
+        {name}: {this.props.location}
+      </div>
+    );
+  }
+}
+
+export default UserClass;
+
+<UserClass name=' NITIN' location='Punjab'/>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////// 'State Variables ' in 'CLASS COMPONENT'
+import React from 'react';
+
+class UserClass extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      count: 1,  //Declared in 'Constructor' only
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        {this.props.name}: {this.props.location} = {this.state.count}
+        <br />
+        <button
+          onClick={() => {
+            this.setState({
+              count: this.state.count + 1, //Object Passed as an Argument 
+            });
+          }}
+        >
+          click
+        </button>
+      </div>
+    );
+  }
+}
+
+export default UserClass;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////// 'Class methods' in 'CLASS COMPONENT' --> Called using 'this'
+import React from 'react';
+
+class UserClass extends React.Component {
+  constructor(props) {
+    super(props);
+
+    //State Variable inside constructor
+    this.state = {
+      count: 1,
+    };
+  }
+
+  // Class Methods declared--> Outside Constructor without const
+  increment = () => {
+    this.setState({
+      count: this.state.count + 1,
+    });
+  };
+  render() {
+    return (
+      <div>
+        {this.props.name}: {this.props.location} ={this.state.count}
+        <br />
+        
+        <button onClick={this.increment}>click</button>
+      </div>
+    );
+  }
+}
+
+export default UserClass;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////MOUNTING (componentDidMount)--->Used for executing code after component rendering
+///Mounting phase --> render(constructor)  ---> commit(reACT updates DOM and refs) --> componentDidMount
+//First 'constructor' then 'render' is called
+
+//Parent Class
+class About extends React.Component {
+
+  constructor(props) {
+    super(props);
+    console.log('Parent Constructor');
+  }
+
+  //Mainly used for API Calls as it is called at end of cycle of class
+  componentDidMount() {
+    console.log('Parent Component did Mount');
+  }
+
+  render() {
+    console.log('Parent Render');
+    return (
+        <div>
+          <UserClass
+            name=' NITIN'
+            location='Punjab'
+          />
+     </div>
+    );
+  }
+}
+
+//Child Class
+class UserClass extends React.Component {
+
+  constructor(props) {
+    super(props);
+    console.log('child Constructor');
+  }
+
+  componentDidMount() {
+    console.log('Parent Component did Mount');
+    //API CALL
+  }
+
+  render() {
+    console.log('Child Render');
+    return <div>Hello</div>;
+  }
+}
+
+/*
+Flow --->>
+  Parent Constructor
+  Parent Render
+  Child Constructor
+  Child Render
+  Child Component did Mount
+  Parent Component did Mount
+*/
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//useOutletContext():Passing context to the child of that component
+
+<div className='App'>
+      <Header />
+      <Outlet context={{ hello: 'welcome' }} />
+      <Footer />
+</div>
+
+import { useOutletContext } from 'react-router-dom';
+
+const Contact = () => {
+  const context = useOutletContext();
+  const { hello } = context;
+
+  return (
+    <>
+      <h1>Contact Us</h1>
+      <div>This is Contact page{hello}</div>
+    </>
+  );
+};
+
+export default Contact;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// 2 Types of Routing in web apps
-//--->Client Side Routing: Browser handles routes in single-page applications like React  Router 
-//--->Server Side Routing: Server determines responses in multi-page applications
+//replace: they will not return to the previous page, but to the page before that.
+function MyComponent() {
+  return (
+    <div>
+      <Link to="/login" replace>Login</Link>
+    </div>
+  );
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Dynamic Routing: URL changes content based on parameters or variables
+//reloadDocument: It will reload the page
+function MyComponent() {
+  return (
+    <div>
+        <Link  to='/about' reloadDocument ></Link>
+    </div>
+  );
+}
 
-// useParams --> helpful in getting the id
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//NAVLINK : we can Give Style in it
+const Header = () => {
+  return (
+    <NavLink style={({ isActive }) => {return { color: isActive ? 'red' : 'black' };}} to='/'>
+      Home
+    </NavLink>
+  );
+};
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//NAVIGATE():  lets you navigate programmatically.
+const returnHome = () => {
+  return (
+    <div>
+      <button  onClick={() => {  navigate('/');   }}>  Home
+      </button>
+    </div>
+  );
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//useSearchParams :used to read and modify the query string in the URL for the current location
+
+  const [SearchParams, setSearchParams] = useSearchParams('n');
+  const num = SearchParams.get('n');
+
+  return (
+    <>
+      <h1>Contact Us</h1>
+      <div>This is Contact page</div>
+
+      <div>
+        <input
+          value={num}
+          onChange={(e) => setSearchParams({ n: e.target.value })}
+        />
+        {console.log(num)}
+      </div>
+    </>
+  );
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//State:not stored anywhere except location hook
+//1st Way using "LINK"
+ <NavLink  to='/contact' state={'Hello this is state'}>
+    Contact us
+ </NavLink>
+
+  // useLocation
+  const location = useLocation();
+
+  return (
+  <div>
+    {location.state}
+  </div>
+  )
+
+  //2nd Way Using "useNavigate()"
+  const navigate = useNavigate();
+  navigate('/contact', { state: 'Error Page' });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//useEffect
+const App = () => {
+  const [resourceType, setResourceType] = useState('Posts');
+  const [show, setShow] = useState([]);
+
+  async function fetchApi() {
+    const response = await fetch(
+      `https://jsonplaceholder.typicode.com/${resourceType}`
+    );
+    const result = await response.json();
+    setShow(() => {
+      return result;
+    });
+  }
+
+  useEffect(() => {
+    fetchApi();
+  }, [resourceType]);
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          setResourceType(() => {
+            return 'Posts'; //takes a callback
+          });
+        }}
+      >
+        Posts
+      </button>
+      <button
+        onClick={() => {
+          setResourceType('Users');
+        }}
+      >
+        Users
+      </button>
+      <button
+        onClick={() => {
+          setResourceType('Comments');
+        }}
+      >
+        Comments
+      </button>
+      <div>{resourceType}</div>
+      <div>
+        {show.map((idx) => {
+          return JSON.stringify(idx);
+        })}
+      </div>
+    </div>
+  );
+};
+
+//2nd code for printing the width of screen in realtime
+const App = () => {
+  const [resolution, setResolution] = useState(
+    window.innerWidth + ' * ' + window.innerHeight
+  );
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setResolution(window.innerWidth + ' * ' + window.innerHeight);
+    });
+  }, []);
+  
+  return <div>{resolution}</div>;
+};
+
+root.render(<App />);
+
+
+///UnMounting Component using UseEffect
+ useEffect(() => {
+    console.log('Mounted');
+    //CleanUP
+    return () => {
+      console.log('UnMounted');
+    };
+  }, [resourceType]);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

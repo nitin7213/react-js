@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 const CoursePage = () => {
   const [courseInfo, setCourseInfo] = useState(null);
   const { cid } = useParams(); //destructuring
+
   //fetching the api
   useEffect(() => {
     fetchCourse();

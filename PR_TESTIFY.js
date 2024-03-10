@@ -43,7 +43,6 @@ const Header = () => {
 };
 
 //Api
-//Api
 let courseApi = [
   {
     id: 0,

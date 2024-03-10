@@ -1,12 +1,25 @@
 import React from 'react';
+import UserClass from './UserClass';
 
-function About() {
-  return (
-    <div>
-      <h1>About Us </h1>
-      <div>This is About Us page</div>
-    </div>
-  );
+class About extends React.Component {
+  //Constructor
+  constructor(props) {
+    super(props);
+  }
+  //Render
+  render() {
+    return (
+      <div>
+        <h1>About Us - Class component</h1>
+        <div>
+          <UserClass
+            name=' NITIN THAKUR'
+            location='Mohali,Punjab'
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default About;
