@@ -551,6 +551,24 @@ const Search = () => {
     </div>
   );
 };
+
+
+//Show Password icon
+const ShowPass = () => {
+const [show, setShow] = useState(false);
+
+const handleClick = () => {
+  setShow((prevShow) => !prevShow);
+};
+
+return (
+  <div>
+    <input type={show ? 'text' : 'password'} />
+    <button onClick={handleClick}>{show ? 'Hide' : 'Show'}</button>
+  </div>
+);
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// 2 Types of Routing in web apps
 //--->Client Side Routing: Browser handles routes in single-page applications like React Router 
@@ -1045,16 +1063,25 @@ const App = () => {
   const [resolution, setResolution] = useState(
     window.innerWidth + ' * ' + window.innerHeight
   );
+
   useEffect(() => {
-    window.addEventListener('resize', () => {
+    const updateResolution = () => {
       setResolution(window.innerWidth + ' * ' + window.innerHeight);
-    });
+    };
+
+    window.addEventListener('resize', updateResolution);
+
+    // UnMounting/Cleanup
+    return () => {
+      window.removeEventListener('resize', updateResolution);
+    };
   }, []);
   
   return <div>{resolution}</div>;
 };
 
 root.render(<App />);
+
 
 
 ///UnMounting Component using UseEffect
