@@ -1,23 +1,23 @@
-import React from 'react';
+import React from "react";
 
 //Import Components
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Container from './components/Container';
-import { createBrowserRouter, Outlet } from 'react-router-dom';
-import About from './components/About';
-import Contact from './components/Contact';
-import Error from './components/Error';
-import CoursePage from './components/CoursePage';
-import NotFound from './components/NotFound';
-import CourseSidebar from './components/CourseSIdebar';
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Container from "./components/Container";
+import { createBrowserRouter, Outlet } from "react-router-dom";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Error from "./components/Error";
+import CoursePage from "./components/CoursePage";
+import NotFound from "./components/NotFound";
+import CourseSidebar from "./components/CourseSIdebar";
 
 //Call Components
 const App = () => {
   return (
-    <div className='App'>
+    <div className="App">
       <Header />
-      <Outlet context={{ hello: 'welcome' }} />
+      <Outlet context={{ hello: "welcome" }} />
       <Footer />
     </div>
   );
@@ -25,7 +25,7 @@ const App = () => {
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />, //Common Elements
     errorElement: <Error />,
     //Nested Routes
@@ -35,22 +35,22 @@ const router = createBrowserRouter([
         element: <Container />,
       },
       {
-        path: 'about',
+        path: "about",
         element: <About />,
       },
       {
-        path: 'contact',
+        path: "contact",
         element: <Contact />,
       },
       {
-        path: 'course/',
+        path: "course/",
         children: [
           {
             index: true,
             element: <CourseSidebar />,
           },
           {
-            path: ':cid',
+            path: ":cid",
             element: <CoursePage />,
           },
         ],
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '*',
+    path: "*",
     element: <NotFound />,
   },
 ]);

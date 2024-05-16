@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import ReactDOM from 'react-dom/client';
 import router from './src/app';
 import { RouterProvider } from 'react-router-dom';
@@ -12,44 +12,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // );
 
 const App = () => {
-  const [resourceType, setResourceType] = useState('Posts');
-
-  useEffect(() => {
-    console.log('Mounted');
-    //CleanUP
-    return () => {
-      console.log('UnMounted');
-    };
-  }, [resourceType]);
-
-  return (
-    <div>
-      <button
-        onClick={() => {
-          setResourceType(() => {
-            return 'Posts'; //takes a callback
-          });
-        }}
-      >
-        Posts
-      </button>
-      <button
-        onClick={() => {
-          setResourceType('Users');
-        }}
-      >
-        Users
-      </button>
-      <button
-        onClick={() => {
-          setResourceType('Comments');
-        }}
-      >
-        Comments
-      </button>
-      <div>{resourceType}</div>
-    </div>
-  );
+  
+return <div>
+  hello
+</div>
 };
 
 root.render(<App />);
